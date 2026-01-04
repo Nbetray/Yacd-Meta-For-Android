@@ -111,7 +111,9 @@ class ClashWebSocketManager @Inject constructor(
             override fun onMessage(webSocket: WebSocket, text: String) {
                 try {
                     val log = gson.fromJson(text, LogEntry::class.java)
-                    trySend(log)
+                    // Clash API doesn't return timestamp, so we set it here
+                    val logWithTimestamp = log.copy(timestamp = System.currentTimeMillis())
+                    trySend(logWithTimestamp)
                 } catch (e: Exception) {
                     // Ignore parse errors
                 }

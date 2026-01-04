@@ -30,6 +30,7 @@
     <string name="search_proxy">查找代理...</string>
     <string name="proxy_count">%d 个代理</string>
     <string name="testing">测试中...</string>
+    <string name="load_more">加载更多 (%d/%d)</string>
 
     <!-- Rules -->
     <string name="rules">规则</string>

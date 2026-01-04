@@ -12,7 +12,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="16dp"
+        android:clipChildren="false"
+        android:clipToPadding="false">
 
         <!-- Header (clickable to toggle) -->
         <LinearLayout
@@ -21,7 +23,9 @@
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackground"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:clipChildren="false"
+            android:clipToPadding="false">
 
             <ImageButton
                 android:id="@+id/btn_toggle"
@@ -64,6 +68,17 @@
             android:visibility="gone"
             tools:itemCount="3"
             tools:listitem="@layout/item_rule_simple" />
+
+        <!-- Load More Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_load_more"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:visibility="gone"
+            tools:text="加载更多 (100/1000)"
+            tools:visibility="visible" />
 
     </LinearLayout>
 

@@ -14,7 +14,8 @@ import cn.nbetray.databinding.ItemProxyGroupBinding
 class ProxyGroupAdapter(
     private val onProxyClick: (groupName: String, proxyName: String) -> Unit,
     private val onTestLatency: (groupName: String) -> Unit,
-    private val onToggle: (groupName: String) -> Unit
+    private val onToggle: (groupName: String) -> Unit,
+    private val onLoadMore: (groupName: String) -> Unit
 ) : ListAdapter<ProxyGroup, ProxyGroupAdapter.ViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -35,13 +36,17 @@ class ProxyGroupAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         private val proxyAdapter = ProxyAdapter { proxyName ->
-            val group = getItem(bindingAdapterPosition)
-            onProxyClick(group.name, proxyName)
+            val position = bindingAdapterPosition
+            if (position != RecyclerView.NO_POSITION) {
+                onProxyClick(getItem(position).name, proxyName)
+            }
         }
 
         private val proxyDotAdapter = ProxyDotAdapter { proxyName ->
-            val group = getItem(bindingAdapterPosition)
-            onProxyClick(group.name, proxyName)
+            val position = bindingAdapterPosition
+            if (position != RecyclerView.NO_POSITION) {
+                onProxyClick(getItem(position).name, proxyName)
+            }
         }
 
         init {
@@ -54,7 +59,7 @@ class ProxyGroupAdapter(
             }
 
             binding.proxiesSummary.apply {
-                layoutManager = GridLayoutManager(context, 12) // 12 dots per row
+                layoutManager = GridLayoutManager(context, 12)
                 adapter = proxyDotAdapter
                 setHasFixedSize(true)
                 itemAnimator = null
@@ -67,10 +72,11 @@ class ProxyGroupAdapter(
             binding.groupType.text = group.type.lowercase()
             binding.currentProxy.text = group.now ?: "None"
 
-            // Show proxy count
+            val totalSize = group.proxies.size
+
             binding.proxyCount.text = binding.root.context.getString(
                 R.string.proxy_count,
-                group.proxies.size
+                totalSize
             )
 
             // Handle testing state
@@ -87,24 +93,42 @@ class ProxyGroupAdapter(
                 binding.btnToggle.setImageResource(R.drawable.ic_expand_less)
                 binding.proxiesList.visibility = View.VISIBLE
                 binding.proxiesSummary.visibility = View.GONE
+
+                // Use displayedProxies from data model
+                proxyAdapter.submitList(group.displayedProxies)
+
+                // Show/hide load more button
+                if (group.hasMore) {
+                    binding.btnLoadMore.visibility = View.VISIBLE
+                    binding.btnLoadMore.text = binding.root.context.getString(
+                        R.string.load_more,
+                        group.displayedCount,
+                        totalSize
+                    )
+                } else {
+                    binding.btnLoadMore.visibility = View.GONE
+                }
             } else {
                 binding.btnToggle.setImageResource(R.drawable.ic_expand_more)
                 binding.proxiesList.visibility = View.GONE
                 binding.proxiesSummary.visibility = View.VISIBLE
+                binding.btnLoadMore.visibility = View.GONE
             }
 
             // Toggle click handlers
-            val toggleAction = {
-                onToggle(group.name)
-            }
-            binding.btnToggle.setOnClickListener { toggleAction() }
-            binding.header.setOnClickListener { toggleAction() }
+            binding.btnToggle.setOnClickListener { onToggle(group.name) }
+            binding.header.setOnClickListener { onToggle(group.name) }
 
             binding.btnTestLatency.setOnClickListener {
                 onTestLatency(group.name)
             }
 
-            proxyAdapter.submitList(group.proxies)
+            // Load more button
+            binding.btnLoadMore.setOnClickListener {
+                onLoadMore(group.name)
+            }
+
+            // Dot view: always show all (dots are lightweight)
             proxyDotAdapter.submitList(group.proxies)
         }
     }

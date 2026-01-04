@@ -52,6 +52,9 @@ class ProxiesFragment : Fragment() {
             },
             onToggle = { groupName ->
                 viewModel.toggleGroup(groupName)
+            },
+            onLoadMore = { groupName ->
+                viewModel.loadMoreProxies(groupName)
             }
         )
 

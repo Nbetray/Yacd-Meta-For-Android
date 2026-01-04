@@ -19,8 +19,19 @@ data class ProxyGroup(
     val all: List<String>,
     val proxies: List<ProxyItem>,
     val isTesting: Boolean = false,
-    val isExpanded: Boolean = false
-)
+    val isExpanded: Boolean = false,
+    val displayedCount: Int = PAGE_SIZE
+) {
+    companion object {
+        const val PAGE_SIZE = 50
+    }
+
+    val displayedProxies: List<ProxyItem>
+        get() = proxies.take(displayedCount)
+
+    val hasMore: Boolean
+        get() = displayedCount < proxies.size
+}
 
 data class ProxyItem(
     val name: String,
@@ -185,7 +196,21 @@ class ProxiesViewModel @Inject constructor(
     fun toggleGroup(groupName: String) {
         val updatedGroups = _uiState.value.groups.map { group ->
             if (group.name == groupName) {
-                group.copy(isExpanded = !group.isExpanded)
+                // Reset displayedCount when collapsing
+                val newDisplayedCount = if (group.isExpanded) ProxyGroup.PAGE_SIZE else group.displayedCount
+                group.copy(isExpanded = !group.isExpanded, displayedCount = newDisplayedCount)
+            } else {
+                group
+            }
+        }
+        _uiState.value = _uiState.value.copy(groups = updatedGroups)
+    }
+
+    fun loadMoreProxies(groupName: String) {
+        val updatedGroups = _uiState.value.groups.map { group ->
+            if (group.name == groupName) {
+                val newCount = minOf(group.displayedCount + ProxyGroup.PAGE_SIZE, group.proxies.size)
+                group.copy(displayedCount = newCount)
             } else {
                 group
             }

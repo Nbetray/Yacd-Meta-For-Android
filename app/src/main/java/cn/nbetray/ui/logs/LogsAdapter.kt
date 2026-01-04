@@ -11,10 +11,13 @@ import cn.nbetray.databinding.ItemLogBinding
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.TimeZone
 
 class LogsAdapter : ListAdapter<LogEntry, LogsAdapter.ViewHolder>(DiffCallback()) {
 
-    private val timeFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+    private val timeFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault()).apply {
+        timeZone = TimeZone.getDefault()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemLogBinding.inflate(

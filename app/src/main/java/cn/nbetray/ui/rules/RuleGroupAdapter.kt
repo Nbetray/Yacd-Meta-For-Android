@@ -11,7 +11,8 @@ import cn.nbetray.R
 import cn.nbetray.databinding.ItemRuleGroupBinding
 
 class RuleGroupAdapter(
-    private val onToggleClick: (proxy: String) -> Unit
+    private val onToggleClick: (proxy: String) -> Unit,
+    private val onLoadMore: (proxy: String) -> Unit
 ) : ListAdapter<RuleGroup, RuleGroupAdapter.ViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -45,25 +46,45 @@ class RuleGroupAdapter(
 
         fun bind(group: RuleGroup) {
             binding.proxyName.text = group.proxy
+            val totalSize = group.rules.size
             binding.ruleCount.text = binding.root.context.getString(
                 R.string.rule_count,
-                group.rules.size
+                totalSize
             )
 
             // Handle expand/collapse state
             if (group.isExpanded) {
                 binding.rulesList.visibility = View.VISIBLE
                 binding.btnToggle.setImageResource(R.drawable.ic_expand_less)
-                rulesAdapter.submitList(group.rules)
+
+                // Use displayedRules from data model
+                rulesAdapter.submitList(group.displayedRules)
+
+                // Show/hide load more button
+                if (group.hasMore) {
+                    binding.btnLoadMore.visibility = View.VISIBLE
+                    binding.btnLoadMore.text = binding.root.context.getString(
+                        R.string.load_more,
+                        group.displayedCount,
+                        totalSize
+                    )
+                } else {
+                    binding.btnLoadMore.visibility = View.GONE
+                }
             } else {
                 binding.rulesList.visibility = View.GONE
                 binding.btnToggle.setImageResource(R.drawable.ic_expand_more)
+                binding.btnLoadMore.visibility = View.GONE
             }
 
             // Toggle click handlers
-            val toggleAction = { onToggleClick(group.proxy) }
-            binding.btnToggle.setOnClickListener { toggleAction() }
-            binding.header.setOnClickListener { toggleAction() }
+            binding.btnToggle.setOnClickListener { onToggleClick(group.proxy) }
+            binding.header.setOnClickListener { onToggleClick(group.proxy) }
+
+            // Load more button
+            binding.btnLoadMore.setOnClickListener {
+                onLoadMore(group.proxy)
+            }
         }
     }
 

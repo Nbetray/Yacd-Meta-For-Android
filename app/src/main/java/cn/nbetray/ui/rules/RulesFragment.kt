@@ -44,9 +44,14 @@ class RulesFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        adapter = RuleGroupAdapter { proxy ->
-            viewModel.toggleGroup(proxy)
-        }
+        adapter = RuleGroupAdapter(
+            onToggleClick = { proxy ->
+                viewModel.toggleGroup(proxy)
+            },
+            onLoadMore = { proxy ->
+                viewModel.loadMoreRules(proxy)
+            }
+        )
         binding.rulesList.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = this@RulesFragment.adapter

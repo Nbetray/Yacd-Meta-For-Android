@@ -13,8 +13,19 @@ import javax.inject.Inject
 data class RuleGroup(
     val proxy: String,
     val rules: List<Rule>,
-    val isExpanded: Boolean = false
-)
+    val isExpanded: Boolean = false,
+    val displayedCount: Int = PAGE_SIZE
+) {
+    companion object {
+        const val PAGE_SIZE = 50
+    }
+
+    val displayedRules: List<Rule>
+        get() = rules.take(displayedCount)
+
+    val hasMore: Boolean
+        get() = displayedCount < rules.size
+}
 
 data class RulesUiState(
     val ruleGroups: List<RuleGroup> = emptyList(),
@@ -70,7 +81,21 @@ class RulesViewModel @Inject constructor(
     fun toggleGroup(proxy: String) {
         val updatedGroups = _uiState.value.ruleGroups.map { group ->
             if (group.proxy == proxy) {
-                group.copy(isExpanded = !group.isExpanded)
+                // Reset displayedCount when collapsing
+                val newDisplayedCount = if (group.isExpanded) RuleGroup.PAGE_SIZE else group.displayedCount
+                group.copy(isExpanded = !group.isExpanded, displayedCount = newDisplayedCount)
+            } else {
+                group
+            }
+        }
+        _uiState.value = _uiState.value.copy(ruleGroups = updatedGroups)
+    }
+
+    fun loadMoreRules(proxy: String) {
+        val updatedGroups = _uiState.value.ruleGroups.map { group ->
+            if (group.proxy == proxy) {
+                val newCount = minOf(group.displayedCount + RuleGroup.PAGE_SIZE, group.rules.size)
+                group.copy(displayedCount = newCount)
             } else {
                 group
             }
