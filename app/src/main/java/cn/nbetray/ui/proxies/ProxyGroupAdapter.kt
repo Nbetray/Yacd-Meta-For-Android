@@ -1,0 +1,121 @@
+package cn.nbetray.ui.proxies
+
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
+import cn.nbetray.R
+import cn.nbetray.databinding.ItemProxyGroupBinding
+
+class ProxyGroupAdapter(
+    private val onProxyClick: (groupName: String, proxyName: String) -> Unit,
+    private val onTestLatency: (groupName: String) -> Unit,
+    private val onToggle: (groupName: String) -> Unit
+) : ListAdapter<ProxyGroup, ProxyGroupAdapter.ViewHolder>(DiffCallback()) {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val binding = ItemProxyGroupBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+        return ViewHolder(binding)
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bind(getItem(position))
+    }
+
+    inner class ViewHolder(
+        private val binding: ItemProxyGroupBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
+
+        private val proxyAdapter = ProxyAdapter { proxyName ->
+            val group = getItem(bindingAdapterPosition)
+            onProxyClick(group.name, proxyName)
+        }
+
+        private val proxyDotAdapter = ProxyDotAdapter { proxyName ->
+            val group = getItem(bindingAdapterPosition)
+            onProxyClick(group.name, proxyName)
+        }
+
+        init {
+            binding.proxiesList.apply {
+                layoutManager = LinearLayoutManager(context)
+                adapter = proxyAdapter
+                setHasFixedSize(true)
+                itemAnimator = null
+                isNestedScrollingEnabled = false
+            }
+
+            binding.proxiesSummary.apply {
+                layoutManager = GridLayoutManager(context, 12) // 12 dots per row
+                adapter = proxyDotAdapter
+                setHasFixedSize(true)
+                itemAnimator = null
+                isNestedScrollingEnabled = false
+            }
+        }
+
+        fun bind(group: ProxyGroup) {
+            binding.groupName.text = group.name
+            binding.groupType.text = group.type.lowercase()
+            binding.currentProxy.text = group.now ?: "None"
+
+            // Show proxy count
+            binding.proxyCount.text = binding.root.context.getString(
+                R.string.proxy_count,
+                group.proxies.size
+            )
+
+            // Handle testing state
+            if (group.isTesting) {
+                binding.testingProgress.visibility = View.VISIBLE
+                binding.btnTestLatency.visibility = View.GONE
+            } else {
+                binding.testingProgress.visibility = View.GONE
+                binding.btnTestLatency.visibility = View.VISIBLE
+            }
+
+            // Handle expand/collapse state
+            if (group.isExpanded) {
+                binding.btnToggle.setImageResource(R.drawable.ic_expand_less)
+                binding.proxiesList.visibility = View.VISIBLE
+                binding.proxiesSummary.visibility = View.GONE
+            } else {
+                binding.btnToggle.setImageResource(R.drawable.ic_expand_more)
+                binding.proxiesList.visibility = View.GONE
+                binding.proxiesSummary.visibility = View.VISIBLE
+            }
+
+            // Toggle click handlers
+            val toggleAction = {
+                onToggle(group.name)
+            }
+            binding.btnToggle.setOnClickListener { toggleAction() }
+            binding.header.setOnClickListener { toggleAction() }
+
+            binding.btnTestLatency.setOnClickListener {
+                onTestLatency(group.name)
+            }
+
+            proxyAdapter.submitList(group.proxies)
+            proxyDotAdapter.submitList(group.proxies)
+        }
+    }
+
+    class DiffCallback : DiffUtil.ItemCallback<ProxyGroup>() {
+        override fun areItemsTheSame(oldItem: ProxyGroup, newItem: ProxyGroup): Boolean {
+            return oldItem.name == newItem.name
+        }
+
+        override fun areContentsTheSame(oldItem: ProxyGroup, newItem: ProxyGroup): Boolean {
+            return oldItem == newItem
+        }
+    }
+}

@@ -1,0 +1,11 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.YacdMetaForAndroid" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Status bar color matches surface -->
+        <item name="android:statusBarColor">?attr/colorSurface</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <!-- Global font -->
+        <item name="android:fontFamily">@font/maple_mono</item>
+        <item name="fontFamily">@font/maple_mono</item>
+    </style>
+</resources>

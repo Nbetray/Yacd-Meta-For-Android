@@ -1,0 +1,113 @@
+<resources>
+    <string name="app_name">Yacd Meta For Android</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">概览</string>
+    <string name="nav_proxies">代理</string>
+    <string name="nav_rules">规则</string>
+    <string name="nav_connections">连接</string>
+    <string name="nav_logs">日志</string>
+    <string name="nav_config">配置</string>
+
+    <!-- Home -->
+    <string name="traffic">流量</string>
+    <string name="upload">上传</string>
+    <string name="download">下载</string>
+    <string name="memory">内存</string>
+    <string name="speed_format">%s/s</string>
+    <string name="total_upload">上传总量</string>
+    <string name="total_download">下载总量</string>
+
+    <!-- Proxies -->
+    <string name="proxy_group">代理组</string>
+    <string name="test_latency">延迟测速</string>
+    <string name="switch_proxy">切换代理</string>
+    <string name="latency_ms">%d ms</string>
+    <string name="latency_timeout">超时</string>
+    <string name="proxy_providers">代理提供商</string>
+    <string name="update_provider">更新</string>
+    <string name="health_check">健康检查</string>
+    <string name="search_proxy">查找代理...</string>
+    <string name="proxy_count">%d 个代理</string>
+    <string name="testing">测试中...</string>
+
+    <!-- Rules -->
+    <string name="rules">规则</string>
+    <string name="rule_providers">规则提供商</string>
+    <string name="rule_count">%d 条规则</string>
+    <string name="total_rules">共 %d 条规则</string>
+
+    <!-- Connections -->
+    <string name="connections">连接</string>
+    <string name="active_connections">活动: %d</string>
+    <string name="close_all">全部关闭</string>
+    <string name="close_connection">关闭</string>
+    <string name="connection_host">域名</string>
+    <string name="connection_rule">规则</string>
+    <string name="connection_chains">节点链</string>
+    <string name="connection_process">进程</string>
+    <string name="connection_type">类型</string>
+    <string name="connection_speed">速率</string>
+    <string name="connection_traffic">流量</string>
+    <string name="pause">暂停</string>
+    <string name="resume">继续</string>
+
+    <!-- Config -->
+    <string name="config">配置</string>
+    <string name="port_settings">端口设置</string>
+    <string name="http_port">HTTP 端口</string>
+    <string name="socks_port">SOCKS5 端口</string>
+    <string name="mixed_port">混合端口</string>
+    <string name="allow_lan">允许局域网连接</string>
+    <string name="mode">模式</string>
+    <string name="mode_rule">规则</string>
+    <string name="mode_global">全局</string>
+    <string name="mode_direct">直连</string>
+    <string name="log_level">日志等级</string>
+    <string name="tun_settings">TUN 设置</string>
+    <string name="tun_enable">启用 TUN</string>
+    <string name="actions">操作</string>
+    <string name="restart_core">重启核心</string>
+    <string name="upgrade_core">更新核心</string>
+    <string name="upgrade_geo">更新 GEO 数据库</string>
+    <string name="flush_fakeip">清空 FakeIP</string>
+    <string name="reload_config">重载配置</string>
+
+    <!-- Logs -->
+    <string name="logs">日志</string>
+    <string name="clear_logs">清空</string>
+    <string name="log_filter">筛选</string>
+
+    <!-- Backend Config -->
+    <string name="backend_config">后端配置</string>
+    <string name="api_base_url">API 地址</string>
+    <string name="secret">密钥（可选）</string>
+    <string name="connect">连接</string>
+    <string name="test_connection">测试连接</string>
+    <string name="saved_backends">已保存的后端</string>
+    <string name="delete">删除</string>
+    <string name="connection_success">连接成功！</string>
+    <string name="connection_failed">连接失败: %s</string>
+
+    <!-- Rules -->
+    <string name="expand">展开规则</string>
+    <string name="collapse">收起规则</string>
+    <string name="search_rules">查找规则...</string>
+
+    <!-- Common -->
+    <string name="loading">加载中...</string>
+    <string name="error">错误</string>
+    <string name="retry">重试</string>
+    <string name="ok">确定</string>
+    <string name="cancel">取消</string>
+    <string name="save">保存</string>
+    <string name="settings">设置</string>
+    <string name="about">关于</string>
+    <string name="version">版本: %s</string>
+    <string name="no_data">暂无数据</string>
+    <string name="refresh">刷新</string>
+    <string name="language">语言</string>
+    <string name="lang_zh">中文</string>
+    <string name="lang_en">English</string>
+    <string name="lang_follow_system">跟随系统</string>
+</resources>

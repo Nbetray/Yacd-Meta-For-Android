@@ -1,0 +1,113 @@
+<resources>
+    <string name="app_name">Yacd Meta For Android</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_proxies">Proxies</string>
+    <string name="nav_rules">Rules</string>
+    <string name="nav_connections">Connections</string>
+    <string name="nav_logs">Logs</string>
+    <string name="nav_config">Config</string>
+
+    <!-- Home -->
+    <string name="traffic">Traffic</string>
+    <string name="upload">Upload</string>
+    <string name="download">Download</string>
+    <string name="memory">Memory</string>
+    <string name="speed_format">%s/s</string>
+    <string name="total_upload">Total Upload</string>
+    <string name="total_download">Total Download</string>
+
+    <!-- Proxies -->
+    <string name="proxy_group">Proxy Group</string>
+    <string name="test_latency">Test Latency</string>
+    <string name="switch_proxy">Switch Proxy</string>
+    <string name="latency_ms">%d ms</string>
+    <string name="latency_timeout">Timeout</string>
+    <string name="proxy_providers">Proxy Providers</string>
+    <string name="update_provider">Update</string>
+    <string name="health_check">Health Check</string>
+    <string name="search_proxy">Search proxy...</string>
+    <string name="proxy_count">%d proxies</string>
+    <string name="testing">Testing...</string>
+
+    <!-- Rules -->
+    <string name="rules">Rules</string>
+    <string name="rule_providers">Rule Providers</string>
+    <string name="rule_count">%d rules</string>
+    <string name="total_rules">Total: %d rules</string>
+
+    <!-- Connections -->
+    <string name="connections">Connections</string>
+    <string name="active_connections">Active: %d</string>
+    <string name="close_all">Close All</string>
+    <string name="close_connection">Close</string>
+    <string name="connection_host">Host</string>
+    <string name="connection_rule">Rule</string>
+    <string name="connection_chains">Chains</string>
+    <string name="connection_process">Process</string>
+    <string name="connection_type">Type</string>
+    <string name="connection_speed">Speed</string>
+    <string name="connection_traffic">Traffic</string>
+    <string name="pause">Pause</string>
+    <string name="resume">Resume</string>
+
+    <!-- Config -->
+    <string name="config">Configuration</string>
+    <string name="port_settings">Port Settings</string>
+    <string name="http_port">HTTP Port</string>
+    <string name="socks_port">SOCKS5 Port</string>
+    <string name="mixed_port">Mixed Port</string>
+    <string name="allow_lan">Allow LAN</string>
+    <string name="mode">Mode</string>
+    <string name="mode_rule">Rule</string>
+    <string name="mode_global">Global</string>
+    <string name="mode_direct">Direct</string>
+    <string name="log_level">Log Level</string>
+    <string name="tun_settings">TUN Settings</string>
+    <string name="tun_enable">Enable TUN</string>
+    <string name="actions">Actions</string>
+    <string name="restart_core">Restart Core</string>
+    <string name="upgrade_core">Upgrade Core</string>
+    <string name="upgrade_geo">Update GeoIP</string>
+    <string name="flush_fakeip">Flush FakeIP</string>
+    <string name="reload_config">Reload Config</string>
+
+    <!-- Logs -->
+    <string name="logs">Logs</string>
+    <string name="clear_logs">Clear</string>
+    <string name="log_filter">Filter</string>
+
+    <!-- Backend Config -->
+    <string name="backend_config">Backend Config</string>
+    <string name="api_base_url">API Base URL</string>
+    <string name="secret">Secret (Optional)</string>
+    <string name="connect">Connect</string>
+    <string name="test_connection">Test Connection</string>
+    <string name="saved_backends">Saved Backends</string>
+    <string name="delete">Delete</string>
+    <string name="connection_success">Connection successful!</string>
+    <string name="connection_failed">Connection failed: %s</string>
+
+    <!-- Rules -->
+    <string name="expand">Show Rules</string>
+    <string name="collapse">Hide Rules</string>
+    <string name="search_rules">Search rules...</string>
+
+    <!-- Common -->
+    <string name="loading">Loading...</string>
+    <string name="error">Error</string>
+    <string name="retry">Retry</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="settings">Settings</string>
+    <string name="about">About</string>
+    <string name="version">Version: %s</string>
+    <string name="no_data">No data</string>
+    <string name="refresh">Refresh</string>
+    <string name="language">Language</string>
+    <string name="lang_zh">中文</string>
+    <string name="lang_en">English</string>
+    <string name="lang_follow_system">Follow System</string>
+</resources>

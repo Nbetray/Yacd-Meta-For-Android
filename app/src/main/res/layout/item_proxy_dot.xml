@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="22dp"
+    android:layout_height="22dp">
+
+    <View
+        android:id="@+id/proxy_dot"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:layout_gravity="center"
+        android:background="@drawable/proxy_dot_background"
+        tools:background="@color/latency_fast" />
+
+    <View
+        android:id="@+id/selected_indicator"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_gravity="center"
+        android:background="@drawable/selected_ring"
+        android:visibility="gone" />
+
+</FrameLayout>
