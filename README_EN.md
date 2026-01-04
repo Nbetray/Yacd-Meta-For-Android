@@ -6,7 +6,12 @@ A native Android client for Clash/Clash.Meta, ported from [yacd-meta](https://gi
 
 ## Screenshots
 
-TODO
+<p align="center">
+  <img src="doc/images/en_0.jpg" width="24%" />
+  <img src="doc/images/en_1.jpg" width="24%" />
+  <img src="doc/images/en_2.jpg" width="24%" />
+  <img src="doc/images/en_3.jpg" width="24%" />
+</p>
 
 ## Features
 

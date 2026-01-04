@@ -6,7 +6,12 @@ Clash/Clash.Meta 内核的 Android 控制面板，[yacd-meta](https://github.com
 
 ## 截图
 
-TODO
+<p align="center">
+  <img src="doc/images/zh_0.jpg" width="24%" />
+  <img src="doc/images/zh_1.jpg" width="24%" />
+  <img src="doc/images/zh_2.jpg" width="24%" />
+  <img src="doc/images/zh_3.jpg" width="24%" />
+</p>
 
 ## 功能
 
