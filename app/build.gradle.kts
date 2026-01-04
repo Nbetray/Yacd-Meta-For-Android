@@ -22,9 +22,9 @@ android {
     signingConfigs {
         create("release") {
             storeFile = file("release-key.jks")
-            storePassword = "UryUPPzRbTvdfnQewf4E"
-            keyAlias = "yacd-meta-for-android"
-            keyPassword = "UryUPPzRbTvdfnQewf4E"
+            storePassword = System.getenv("STORE_PASSWORD") ?: "UryUPPzRbTvdfnQewf4E"
+            keyAlias = System.getenv("KEY_ALIAS") ?: "yacd-meta-for-android"
+            keyPassword = System.getenv("KEY_PASSWORD") ?: "UryUPPzRbTvdfnQewf4E"
         }
     }
 
