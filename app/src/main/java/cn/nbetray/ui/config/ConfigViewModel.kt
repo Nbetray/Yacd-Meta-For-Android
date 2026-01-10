@@ -71,24 +71,44 @@ class ConfigViewModel @Inject constructor(
 
     fun updateMode(mode: String) {
         viewModelScope.launch {
+            // Optimistic update: update UI immediately for better responsiveness
+            val previousConfig = _uiState.value.config
+            _uiState.value = _uiState.value.copy(
+                config = previousConfig?.copy(mode = mode)
+            )
+
             repository.patchConfigs(ConfigPatch(mode = mode))
                 .onSuccess {
-                    loadConfig()
+                    // Keep the optimistic update, no need to reload
                 }
                 .onFailure { e ->
-                    _uiState.value = _uiState.value.copy(message = "Failed: ${e.message}")
+                    // Rollback to previous state on failure
+                    _uiState.value = _uiState.value.copy(
+                        config = previousConfig,
+                        message = "Failed to update mode: ${e.message}"
+                    )
                 }
         }
     }
 
     fun updateAllowLan(allow: Boolean) {
         viewModelScope.launch {
+            // Optimistic update: update UI immediately for better responsiveness
+            val previousConfig = _uiState.value.config
+            _uiState.value = _uiState.value.copy(
+                config = previousConfig?.copy(allowLan = allow)
+            )
+
             repository.patchConfigs(ConfigPatch(allowLan = allow))
                 .onSuccess {
-                    loadConfig()
+                    // Keep the optimistic update, no need to reload
                 }
                 .onFailure { e ->
-                    _uiState.value = _uiState.value.copy(message = "Failed: ${e.message}")
+                    // Rollback to previous state on failure
+                    _uiState.value = _uiState.value.copy(
+                        config = previousConfig,
+                        message = "Failed to update allow LAN: ${e.message}"
+                    )
                 }
         }
     }

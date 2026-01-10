@@ -27,8 +27,9 @@ class ConfigFragment : Fragment() {
 
     private val viewModel: ConfigViewModel by viewModels()
 
-    // Flag to prevent listener triggering during programmatic updates
+    // Flags to prevent listener triggering during programmatic updates
     private var isUpdatingLanguageChip = false
+    private var isUpdatingModeChip = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -86,13 +87,19 @@ class ConfigFragment : Fragment() {
 
     private fun setupModeChips() {
         binding.modeChips.setOnCheckedStateChangeListener { _, checkedIds ->
+            if (isUpdatingModeChip) return@setOnCheckedStateChangeListener
+
             val mode = when (checkedIds.firstOrNull()) {
                 R.id.chip_rule -> "rule"
                 R.id.chip_global -> "global"
                 R.id.chip_direct -> "direct"
                 else -> return@setOnCheckedStateChangeListener
             }
-            viewModel.updateMode(mode)
+
+            // Check if it's actually a change
+            if (mode != viewModel.uiState.value.config?.mode?.lowercase()) {
+                viewModel.updateMode(mode)
+            }
         }
     }
 
@@ -137,12 +144,14 @@ class ConfigFragment : Fragment() {
                         binding.mixedPort.setText(config.mixedPort.toString())
                         binding.allowLan.isChecked = config.allowLan
 
-                        // Set mode chip
+                        // Set mode chip with flag to prevent listener loop
+                        isUpdatingModeChip = true
                         when (config.mode.lowercase()) {
                             "rule" -> binding.chipRule.isChecked = true
                             "global" -> binding.chipGlobal.isChecked = true
                             "direct" -> binding.chipDirect.isChecked = true
                         }
+                        isUpdatingModeChip = false
 
                         // Set log level
                         val levels = listOf("debug", "info", "warning", "error", "silent")
