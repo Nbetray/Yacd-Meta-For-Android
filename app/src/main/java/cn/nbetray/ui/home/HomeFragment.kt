@@ -12,10 +12,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import cn.nbetray.databinding.FragmentHomeBinding
 import cn.nbetray.util.FormatUtils
+import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.formatter.ValueFormatter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -44,6 +46,13 @@ class HomeFragment : Fragment() {
         observeState()
     }
 
+    // Custom formatter for Y-axis (display as KB or MB)
+    private val bytesAxisFormatter = object : ValueFormatter() {
+        override fun getAxisLabel(value: Float, axis: AxisBase?): String {
+            return FormatUtils.formatChartBytes(value)
+        }
+    }
+
     private fun setupChart() {
         binding.trafficChart.apply {
             description.isEnabled = false
@@ -62,6 +71,7 @@ class HomeFragment : Fragment() {
             axisLeft.apply {
                 setDrawGridLines(true)
                 axisMinimum = 0f
+                valueFormatter = bytesAxisFormatter
             }
 
             axisRight.isEnabled = false
@@ -153,6 +163,11 @@ class HomeFragment : Fragment() {
             Entry(index.toFloat(), data.down.toFloat())
         }
 
+        // Find max value in current data for dynamic Y-axis scaling
+        val maxUp = history.maxOfOrNull { it.up } ?: 0L
+        val maxDown = history.maxOfOrNull { it.down } ?: 0L
+        val maxValue = maxOf(maxUp, maxDown)
+
         val uploadDataSet = LineDataSet(uploadEntries, "Upload").apply {
             color = Color.parseColor("#6366F1")
             setDrawCircles(false)
@@ -169,8 +184,12 @@ class HomeFragment : Fragment() {
             mode = LineDataSet.Mode.CUBIC_BEZIER
         }
 
-        binding.trafficChart.data = LineData(uploadDataSet, downloadDataSet)
-        binding.trafficChart.invalidate()
+        binding.trafficChart.apply {
+            // Dynamically update Y-axis max based on current 1-minute data
+            axisLeft.axisMaximum = if (maxValue > 0) maxValue * 1.1f else 1f
+            data = LineData(uploadDataSet, downloadDataSet)
+            invalidate()
+        }
     }
 
     private fun updateMemoryChart(history: List<cn.nbetray.data.model.MemoryData>) {

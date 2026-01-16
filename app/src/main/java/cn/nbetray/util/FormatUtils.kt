@@ -23,4 +23,16 @@ object FormatUtils {
             else -> String.format("%.1f s", ms / 1000.0)
         }
     }
+
+    /**
+     * Format bytes for chart Y-axis (KB or MB, max unit is MB)
+     */
+    fun formatChartBytes(bytes: Float): String {
+        val kb = bytes / 1024f
+        return if (kb >= 1024f) {
+            String.format("%.1fMB", kb / 1024f)
+        } else {
+            String.format("%.0fKB", kb)
+        }
+    }
 }
