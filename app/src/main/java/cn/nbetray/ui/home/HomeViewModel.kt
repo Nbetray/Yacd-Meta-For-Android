@@ -80,7 +80,7 @@ class HomeViewModel @Inject constructor(
                     .collect { traffic ->
                         _uiState.value = _uiState.value.copy(traffic = traffic)
 
-                        // Keep last 60 data points for chart
+                        // Keep last 1 minute (60 data points) for chart
                         val history = _trafficHistory.value.toMutableList()
                         history.add(traffic)
                         if (history.size > 60) {
@@ -105,7 +105,7 @@ class HomeViewModel @Inject constructor(
                     .collect { memory ->
                         _uiState.value = _uiState.value.copy(memory = memory)
 
-                        // Keep last 60 data points for chart
+                        // Keep last 1 minute (60 data points) for chart
                         val history = _memoryHistory.value.toMutableList()
                         history.add(memory)
                         if (history.size > 60) {

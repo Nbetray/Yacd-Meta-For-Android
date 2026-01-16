@@ -41,7 +41,6 @@ object NetworkModule {
             .connectTimeout(10, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
             .writeTimeout(30, TimeUnit.SECONDS)
-            .pingInterval(30, TimeUnit.SECONDS)
             .build()
     }
 

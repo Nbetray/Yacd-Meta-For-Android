@@ -22,6 +22,15 @@ class ClashWebSocketManager @Inject constructor(
     private val okHttpClient: OkHttpClient,
     private val gson: Gson
 ) {
+    // Dedicated WebSocket client - no timeouts, no ping (Clash doesn't respond to ping)
+    private val webSocketClient: OkHttpClient by lazy {
+        OkHttpClient.Builder()
+            .connectTimeout(10, java.util.concurrent.TimeUnit.SECONDS)
+            .readTimeout(0, java.util.concurrent.TimeUnit.SECONDS)
+            .writeTimeout(0, java.util.concurrent.TimeUnit.SECONDS)
+            .build()
+    }
+
     private fun buildWebSocketUrl(config: ApiConfig, path: String): String {
         val baseUrl = config.baseUrl
             .replace("http://", "ws://")
@@ -41,7 +50,7 @@ class ClashWebSocketManager @Inject constructor(
         val url = buildWebSocketUrl(config, "traffic")
         val request = Request.Builder().url(url).build()
 
-        val webSocket = okHttpClient.newWebSocket(request, object : WebSocketListener() {
+        val webSocket = webSocketClient.newWebSocket(request, object : WebSocketListener() {
             override fun onMessage(webSocket: WebSocket, text: String) {
                 try {
                     val traffic = gson.fromJson(text, TrafficData::class.java)
@@ -69,7 +78,7 @@ class ClashWebSocketManager @Inject constructor(
         val url = buildWebSocketUrl(config, "connections")
         val request = Request.Builder().url(url).build()
 
-        val webSocket = okHttpClient.newWebSocket(request, object : WebSocketListener() {
+        val webSocket = webSocketClient.newWebSocket(request, object : WebSocketListener() {
             override fun onMessage(webSocket: WebSocket, text: String) {
                 try {
                     val connections = gson.fromJson(text, ConnectionsResponse::class.java)
@@ -107,7 +116,7 @@ class ClashWebSocketManager @Inject constructor(
 
         val request = Request.Builder().url(url).build()
 
-        val webSocket = okHttpClient.newWebSocket(request, object : WebSocketListener() {
+        val webSocket = webSocketClient.newWebSocket(request, object : WebSocketListener() {
             override fun onMessage(webSocket: WebSocket, text: String) {
                 try {
                     val log = gson.fromJson(text, LogEntry::class.java)
@@ -137,7 +146,7 @@ class ClashWebSocketManager @Inject constructor(
         val url = buildWebSocketUrl(config, "memory")
         val request = Request.Builder().url(url).build()
 
-        val webSocket = okHttpClient.newWebSocket(request, object : WebSocketListener() {
+        val webSocket = webSocketClient.newWebSocket(request, object : WebSocketListener() {
             override fun onMessage(webSocket: WebSocket, text: String) {
                 try {
                     val memory = gson.fromJson(text, MemoryData::class.java)
